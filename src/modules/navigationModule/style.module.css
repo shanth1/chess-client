@@ -1,0 +1,25 @@
+.navigation {
+    display: flex;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    gap: 70px;
+}
+
+.link {
+    font-size: large;
+    color: white;
+    text-decoration: none;
+    background-color: transparent; 
+    -webkit-text-decoration-skip: objects; 
+}
+
+.link:active,
+.link:hover {
+    text-decoration: underline;
+}
+
+.active { 
+    text-decoration: underline;
+}
