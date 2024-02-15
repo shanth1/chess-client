@@ -13,12 +13,12 @@ const getManifest = (pathToIcons) => {
     publicPath: '.',
     icons: [
       {
-        src: path.join(pathToIcons, 'logo.png'),
+        src: path.join(pathToIcons, 'logo-android.png'),
         sizes: [36, 48, 72, 96, 144, 192, 512],
         destination: path.join('icons', 'android'),
       },
       {
-        src: path.join(pathToIcons, 'logo.png'),
+        src: path.join(pathToIcons, 'logo-ios.png'),
         sizes: [36, 48, 72, 96, 144, 192, 512, 1024],
         destination: path.join('icons', 'ios'),
         ios: true,
