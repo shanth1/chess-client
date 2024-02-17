@@ -1,4 +1,4 @@
-import { Button, Input } from '@/common';
+import { Button } from '@/common';
 
 const setLocalDescription = async (peerConnection) => {
   const dataChannel = peerConnection.createDataChannel('channel-name');
@@ -11,10 +11,7 @@ const setLocalDescription = async (peerConnection) => {
   peerConnection.setLocalDescription(offer);
 
   peerConnection.onicecandidate = (e) => {
-    console.log(
-      'icecandidate:',
-      JSON.stringify(peerConnection.localDescription)
-    );
+    console.log('получен icecandidate');
   };
 };
 
@@ -28,13 +25,30 @@ export default () => {
 
   setLocalDescription(peerConnection);
 
-  const input = new Input().element;
-  const button = new Button('Ok', () => {
-    setRemoteDescription(peerConnection, input.value);
+  const copyOffer = new Button('Copy', () => {
+    const offer = JSON.stringify(peerConnection.localDescription);
+    if (offer) {
+      navigator.clipboard
+        .writeText(offer)
+        .then(() => {
+          console.log('copied');
+        })
+        .catch(console.error);
+    }
   }).element;
 
-  page.appendChild(input);
-  page.appendChild(button);
+  const pasteButton = new Button('Paste', () => {
+    navigator.clipboard
+      .readText()
+      .then((text) => {
+        console.log('paste');
+        setRemoteDescription(peerConnection, text);
+      })
+      .catch(console.error);
+  }).element;
+
+  page.appendChild(copyOffer);
+  page.appendChild(pasteButton);
 
   return page;
 };
