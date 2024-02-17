@@ -1,6 +1,12 @@
 import './app/styles/normalize.css';
 import { makeServiceWorkers } from './app/service';
-import { getHomePage } from './pages';
+import {
+  getAlicePage,
+  getBobPage,
+  getConnectPage,
+  getGamePage,
+  getHomePage,
+} from './pages';
 import router from './app/router';
 
 window.addEventListener('load', () => {
@@ -8,11 +14,12 @@ window.addEventListener('load', () => {
 });
 
 const rootElement = document.getElementById('root');
-const pageContainer = document.createElement('div');
 
-router.initPageContainer(pageContainer);
+router.initPageContainer(rootElement);
 router.initRoutes({
   '/': getHomePage(),
+  '/alice': getAlicePage(),
+  '/bob': getBobPage(),
+  '/connect': getConnectPage(),
+  '/game': getGamePage(),
 });
-
-rootElement.appendChild(pageContainer);
