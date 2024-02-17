@@ -1,10 +1,13 @@
 import { Button } from '@/common';
+import router from '../app/router';
 
 const setLocalDescription = async (peerConnection) => {
-  const dataChannel = peerConnection.createDataChannel('channel-name');
+  window.dataChannel = peerConnection.createDataChannel('channel-name');
 
-  dataChannel.onopen = () => console.log('Канал открыт');
-  dataChannel.onmessage = (e) => console.log('message:', e.data);
+  window.dataChannel.onopen = () => {
+    console.log('Канал открыт');
+    router.navigate('game');
+  };
 
   const offer = await peerConnection.createOffer();
 

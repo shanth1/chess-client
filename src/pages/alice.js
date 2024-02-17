@@ -1,16 +1,17 @@
 import { Button } from '@/common';
+import router from '../app/router';
 
 const setLocalDescription = async (peerConnection, offer) => {
   peerConnection.onicecandidate = () => console.log('получен icecandidate');
-
-  console.log('before remote:', JSON.parse(offer));
   peerConnection.setRemoteDescription(JSON.parse(offer));
 
-  let dataChannel;
+  window.dataChannel;
   peerConnection.ondatachannel = (event) => {
-    dataChannel = event.channel;
-    dataChannel.onopen = () => console.log('Канал получен и открыт!');
-    dataChannel.onmessage = (e) => console.log('message:', e.data);
+    window.dataChannel = event.channel;
+    window.dataChannel.onopen = () => {
+      console.log('Канал получен и открыт!');
+      router.navigate('game');
+    };
   };
 
   const answer = await peerConnection.createAnswer();
