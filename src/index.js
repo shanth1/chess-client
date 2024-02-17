@@ -17,9 +17,9 @@ const rootElement = document.getElementById('root');
 
 router.initPageContainer(rootElement);
 router.initRoutes({
-  '/': getHomePage(),
-  '/alice': getAlicePage(),
-  '/bob': getBobPage(),
-  '/connect': getConnectPage(),
-  '/game': getGamePage(),
+  '/': getHomePage,
+  '/alice': getAlicePage,
+  '/bob': getBobPage,
+  '/connect': getConnectPage,
+  '/game': getGamePage,
 });

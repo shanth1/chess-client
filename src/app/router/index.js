@@ -57,16 +57,16 @@ class Router {
 
   _resolve() {
     if (location.hash === '') {
-      const homePage = this._routes['/'];
-      if (homePage) {
-        this._updatePage(homePage);
+      const getHomePage = this._routes['/'];
+      if (getHomePage) {
+        this._updatePage(getHomePage());
       }
       return;
     }
 
-    const newPage = this._routes[location.hash.replace('#', '/')];
-    if (newPage) {
-      this._updatePage(newPage);
+    const getNewPage = this._routes[location.hash.replace('#', '/')];
+    if (getNewPage) {
+      this._updatePage(getNewPage());
     } else {
       this._pageContainer.innerHTML = '404 | Not Found';
     }
