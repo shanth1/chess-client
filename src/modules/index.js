@@ -1,1 +1,1 @@
-export { default as getHelloModule } from './helloModule';
+export { default as getMenuModule } from './Menu';

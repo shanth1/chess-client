@@ -1,12 +1,9 @@
 import { Component } from '@/base';
 import { Header } from '@/common';
-import styles from './style.module.css';
 
-export default () => {
+export default (headerText, buttons = []) => {
   const element = new Component('div').element;
-  element.classList.add(styles.hello);
-
-  const header = new Header('Hello, world!');
+  const header = new Header(headerText);
 
   element.appendChild(header.element);
 
