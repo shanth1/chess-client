@@ -1,24 +1,6 @@
 import { Button } from '@/common';
 import router from '../app/router';
-import { pcConfig } from '../app/config';
-
-const setLocalDescription = async (peerConnection, offer, statusElement) => {
-  peerConnection.onicecandidate = () => {
-    statusElement.innerText = 'Статус: создан answer';
-  };
-  peerConnection.setRemoteDescription(JSON.parse(offer));
-
-  window.dataChannel;
-  peerConnection.ondatachannel = (event) => {
-    window.dataChannel = event.channel;
-    window.dataChannel.onopen = () => {
-      router.navigate('game');
-    };
-  };
-
-  const answer = await peerConnection.createAnswer();
-  peerConnection.setLocalDescription(answer);
-};
+import { connection } from '../app/connection';
 
 const getStatusElement = () => {
   const status = document.createElement('div');
@@ -32,32 +14,45 @@ const getStatusElement = () => {
 
 export default () => {
   const page = document.createElement('div');
-  const peerConnection = new RTCPeerConnection(pcConfig);
-  const status = getStatusElement();
+  page.style.padding = '20px';
+
+  const statusElement = getStatusElement();
+
+  connection.onIceCandidate = () => {
+    statusElement.innerText = 'Статус: создан answer';
+  };
 
   const pasteButton = new Button('Paste', () => {
     navigator.clipboard
       .readText()
       .then((text) => {
         console.log('paste');
-        setLocalDescription(peerConnection, text, status);
+        connection.onIceCandidate(
+          () => (statusElement.innerText = 'Статус: создан answer')
+        );
+        connection.setRemoteDescription(text);
+        connection.onOpen('alice', () => {
+          router.navigate('game');
+        });
+        connection.createAnswer();
       })
       .catch(console.error);
   }).element;
+  pasteButton.style.marginRight = '8px';
 
   const copyOffer = new Button('Copy', () => {
-    const offer = JSON.stringify(peerConnection.localDescription);
+    const offer = connection.getLocalDescription();
     if (offer) {
       navigator.clipboard
         .writeText(offer)
         .then(() => {
-          status.innerText = 'Статус: скопировано, ждем открытия канала';
+          statusElement.innerText = 'Статус: скопировано, ждем открытия канала';
         })
         .catch(console.error);
     }
   }).element;
 
-  page.appendChild(status);
+  page.appendChild(statusElement);
   page.appendChild(pasteButton);
   page.appendChild(copyOffer);
 

@@ -13,7 +13,7 @@ export default () => {
     router.navigate('alice');
   }).element;
 
-  const backButton = new Button('Go back', () => {
+  const backButton = new Button('←', () => {
     router.navigate('');
   }).element;
 
