@@ -1,26 +1,14 @@
 import { Button } from '@/common';
 import router from '../app/router';
-import { pcConfig } from '../app/config';
+import { connection } from '../app/connection';
 
-const setLocalDescription = async (peerConnection, statusElement) => {
-  window.dataChannel = peerConnection.createDataChannel('channel-name');
-
-  window.dataChannel.onopen = () => {
-    console.log('Канал открыт');
+const initConnection = (statusElement) => {
+  connection.onOpen('bob', () => {
     router.navigate('game');
-  };
-
-  const offer = await peerConnection.createOffer();
-
-  peerConnection.setLocalDescription(offer);
-
-  peerConnection.onicecandidate = (e) => {
+  });
+  connection.onIceCandidate(() => {
     statusElement.innerText = 'Статус: создан offer';
-  };
-};
-
-const setRemoteDescription = (peerConnection, answer) => {
-  peerConnection.setRemoteDescription(JSON.parse(answer));
+  });
 };
 
 const getStatusElement = () => {
@@ -35,19 +23,19 @@ const getStatusElement = () => {
 
 export default () => {
   const page = document.createElement('div');
-  const peerConnection = new RTCPeerConnection(pcConfig);
-  const status = getStatusElement();
+  const statusElement = getStatusElement();
 
-  setLocalDescription(peerConnection, status);
+  initConnection(statusElement);
+  connection.createOffer();
 
   const copyOffer = new Button('Copy', () => {
-    const offer = JSON.stringify(peerConnection.localDescription);
+    const offer = connection.getLocalDescription();
     if (offer) {
       navigator.clipboard
         .writeText(offer)
         .then(() => {
           console.log('copied');
-          status.innerText = 'Статус: скопировано, ожидаем answer';
+          statusElement.innerText = 'Статус: скопировано, ожидаем answer';
         })
         .catch(console.error);
     }
@@ -58,12 +46,12 @@ export default () => {
       .readText()
       .then((text) => {
         console.log('paste');
-        setRemoteDescription(peerConnection, text);
+        connection.setRemoteDescription(text);
       })
       .catch(console.error);
   }).element;
 
-  page.appendChild(status);
+  page.appendChild(statusElement);
   page.appendChild(copyOffer);
   page.appendChild(pasteButton);
 

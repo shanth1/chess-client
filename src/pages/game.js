@@ -1,3 +1,4 @@
+import { connection } from '../app/connection';
 import { Button, Input } from '../common';
 
 const getMessageElement = (text) => {
@@ -14,8 +15,8 @@ export default () => {
   form.onsubmit = (event) => event.preventDefault();
 
   const chatContainer = document.createElement('div');
-  if (window.dataChannel) {
-    window.dataChannel.onmessage = (event) => {
+  if (connection.dataChannel) {
+    connection.dataChannel.onmessage = (event) => {
       const message = getMessageElement(event.data);
       message.style.color = 'grey';
       chatContainer.prepend(message);
@@ -26,8 +27,8 @@ export default () => {
     if (input.value) {
       const message = getMessageElement(input.value);
       chatContainer.prepend(message);
-      if (window.dataChannel) {
-        dataChannel.send(input.value);
+      if (connection.dataChannel) {
+        connection.dataChannel.send(input.value);
       }
       input.value = '';
     }
