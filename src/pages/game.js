@@ -1,5 +1,13 @@
 import { Button, Input } from '../common';
 
+const getMessageElement = (text) => {
+  const message = document.createElement('div');
+  message.innerText = `[${new Date().toUTCString().split(' ')[4]}]: ${text}`;
+  message.style.fontSize = '24px';
+
+  return message;
+};
+
 export default () => {
   const page = document.createElement('div');
   const form = document.createElement('form');
@@ -8,19 +16,16 @@ export default () => {
   const chatContainer = document.createElement('div');
   if (window.dataChannel) {
     window.dataChannel.onmessage = (event) => {
-      const message = document.createElement('div');
-      message.innerText = `[${new Date().toUTCString()}]: ${event.data}`;
+      const message = getMessageElement(event.data);
       message.style.color = 'grey';
-      chatContainer.appendChild(message);
+      chatContainer.prepend(message);
     };
   }
   const input = new Input().element;
   const sendButton = new Button('Send', () => {
     if (input.value) {
-      const message = document.createElement('div');
-      message.innerText = `[${new Date().toUTCString()}]: ${input.value}`;
-      chatContainer.appendChild(message);
-
+      const message = getMessageElement(input.value);
+      chatContainer.prepend(message);
       if (window.dataChannel) {
         dataChannel.send(input.value);
       }
