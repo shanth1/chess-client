@@ -1,7 +1,7 @@
 import { Button } from '@/common';
 import router from '../app/router';
 
-const setLocalDescription = async (peerConnection) => {
+const setLocalDescription = async (peerConnection, statusElement) => {
   window.dataChannel = peerConnection.createDataChannel('channel-name');
 
   window.dataChannel.onopen = () => {
@@ -14,7 +14,7 @@ const setLocalDescription = async (peerConnection) => {
   peerConnection.setLocalDescription(offer);
 
   peerConnection.onicecandidate = (e) => {
-    console.log('получен icecandidate');
+    statusElement.innerText = 'Статус: создан offer';
   };
 };
 
@@ -22,11 +22,22 @@ const setRemoteDescription = (peerConnection, answer) => {
   peerConnection.setRemoteDescription(JSON.parse(answer));
 };
 
+const getStatusElement = () => {
+  const status = document.createElement('div');
+  status.style.padding = '8px';
+  status.style.fontSize = '22px';
+
+  status.innerText = 'Статус:';
+
+  return status;
+};
+
 export default () => {
   const page = document.createElement('div');
   const peerConnection = new RTCPeerConnection();
+  const status = getStatusElement();
 
-  setLocalDescription(peerConnection);
+  setLocalDescription(peerConnection, status);
 
   const copyOffer = new Button('Copy', () => {
     const offer = JSON.stringify(peerConnection.localDescription);
@@ -35,6 +46,7 @@ export default () => {
         .writeText(offer)
         .then(() => {
           console.log('copied');
+          status.innerText = 'Статус: скопировано, ожидаем answer';
         })
         .catch(console.error);
     }
@@ -50,6 +62,7 @@ export default () => {
       .catch(console.error);
   }).element;
 
+  page.appendChild(status);
   page.appendChild(copyOffer);
   page.appendChild(pasteButton);
 
