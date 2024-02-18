@@ -14,6 +14,8 @@ const getStatusElement = () => {
 
 export default () => {
   const page = document.createElement('div');
+  page.style.padding = '20px';
+
   const statusElement = getStatusElement();
 
   connection.onIceCandidate = () => {
@@ -36,6 +38,7 @@ export default () => {
       })
       .catch(console.error);
   }).element;
+  pasteButton.style.marginRight = '8px';
 
   const copyOffer = new Button('Copy', () => {
     const offer = connection.getLocalDescription();

@@ -23,6 +23,8 @@ const getStatusElement = () => {
 
 export default () => {
   const page = document.createElement('div');
+  page.style.padding = '20px';
+
   const statusElement = getStatusElement();
 
   initConnection(statusElement);
@@ -40,6 +42,7 @@ export default () => {
         .catch(console.error);
     }
   }).element;
+  copyOffer.style.marginRight = '8px';
 
   const pasteButton = new Button('Paste', () => {
     navigator.clipboard
@@ -52,6 +55,7 @@ export default () => {
   }).element;
 
   page.appendChild(statusElement);
+
   page.appendChild(copyOffer);
   page.appendChild(pasteButton);
 
