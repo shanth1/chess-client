@@ -1,5 +1,6 @@
 import { Button } from '@/common';
 import router from '../app/router';
+import { pcConfig } from '../app/config';
 
 const setLocalDescription = async (peerConnection, statusElement) => {
   window.dataChannel = peerConnection.createDataChannel('channel-name');
@@ -34,7 +35,7 @@ const getStatusElement = () => {
 
 export default () => {
   const page = document.createElement('div');
-  const peerConnection = new RTCPeerConnection();
+  const peerConnection = new RTCPeerConnection(pcConfig);
   const status = getStatusElement();
 
   setLocalDescription(peerConnection, status);

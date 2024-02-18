@@ -1,5 +1,6 @@
 import { Button } from '@/common';
 import router from '../app/router';
+import { pcConfig } from '../app/config';
 
 const setLocalDescription = async (peerConnection, offer, statusElement) => {
   peerConnection.onicecandidate = () => {
@@ -31,7 +32,7 @@ const getStatusElement = () => {
 
 export default () => {
   const page = document.createElement('div');
-  const peerConnection = new RTCPeerConnection();
+  const peerConnection = new RTCPeerConnection(pcConfig);
   const status = getStatusElement();
 
   const pasteButton = new Button('Paste', () => {
