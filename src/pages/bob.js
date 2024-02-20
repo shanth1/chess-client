@@ -24,8 +24,10 @@ const getStatusElement = () => {
 export default () => {
   const page = document.createElement('div');
   const statusElement = getStatusElement();
+  const logContainer = document.createElement('div');
 
   initConnection(statusElement);
+  connection.initLogger(logContainer);
   connection.createOffer();
 
   const copyOffer = new Button('Copy', () => {
@@ -54,6 +56,7 @@ export default () => {
   page.appendChild(statusElement);
   page.appendChild(copyOffer);
   page.appendChild(pasteButton);
+  page.appendChild(logContainer);
 
   return page;
 };

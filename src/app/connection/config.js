@@ -18,5 +18,6 @@ export const peerConfiguration = {
     { urls: 'stun:stun.voip.blackberry.com:3478' },
     { urls: 'stun:stun.voipbuster.com' },
     { urls: 'stun:stun.voxgratia.org' },
+    { urls: 'stun:freestun.net:3479' },
   ],
 };
