@@ -1,8 +1,20 @@
 const { peerConfiguration } = require('./config');
 
 class WebRTCConnection {
-  constructor() {
-    this.peer = new RTCPeerConnection(peerConfiguration);
+  constructor() {}
+
+  async initConnection() {
+    const response = await fetch(
+      'https://few-clicks-test.metered.live/api/v1/turn/credentials?apiKey=2a578010173d82ed3be53773643c71c3804b'
+    );
+
+    // Saving the response in the iceServers array
+    const iceServers = await response.json();
+
+    // Using the iceServers array in the RTCPeerConnection method
+    this.peer = new RTCPeerConnection({
+      iceServers: iceServers,
+    });
 
     this.peer.onconnectionstatechange = (event) => {
       console.log('state changed:', this.peer.iceConnectionState, event);
@@ -10,8 +22,6 @@ class WebRTCConnection {
     this.peer.onicecandidateerror = (event) => {
       console.log('ice error', event);
     };
-
-    this.dataChannel = null;
   }
 
   initLogger(logContainer) {

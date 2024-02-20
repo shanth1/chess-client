@@ -2,14 +2,7 @@ import { Button } from '@/common';
 import router from '../app/router';
 import { connection } from '../app/connection';
 
-const initConnection = (statusElement) => {
-  connection.onOpen('bob', () => {
-    router.navigate('game');
-  });
-  connection.onIceCandidate(() => {
-    statusElement.innerText = 'Статус: создан offer';
-  });
-};
+const initConnection = (statusElement) => {};
 
 const getStatusElement = () => {
   const status = document.createElement('div');
@@ -26,9 +19,16 @@ export default () => {
   const statusElement = getStatusElement();
   const logContainer = document.createElement('div');
 
-  initConnection(statusElement);
-  connection.initLogger(logContainer);
-  connection.createOffer();
+  connection.initConnection().then(() => {
+    connection.onOpen('bob', () => {
+      router.navigate('game');
+    });
+    connection.onIceCandidate(() => {
+      statusElement.innerText = 'Статус: создан offer';
+    });
+    connection.initLogger(logContainer);
+    connection.createOffer();
+  });
 
   const copyOffer = new Button('Copy', () => {
     const offer = connection.getLocalDescription();
