@@ -26,8 +26,10 @@ export default () => {
   page.style.padding = '20px';
 
   const statusElement = getStatusElement();
+  const logContainer = document.createElement('div');
 
   initConnection(statusElement);
+  connection.initLogger(logContainer);
   connection.createOffer();
 
   const copyOffer = new Button('Copy', () => {
@@ -58,6 +60,7 @@ export default () => {
 
   page.appendChild(copyOffer);
   page.appendChild(pasteButton);
+  page.appendChild(logContainer);
 
   return page;
 };

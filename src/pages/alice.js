@@ -17,7 +17,9 @@ export default () => {
   page.style.padding = '20px';
 
   const statusElement = getStatusElement();
+  const logContainer = document.createElement('div');
 
+  connection.initLogger(logContainer);
   connection.onIceCandidate = () => {
     statusElement.innerText = 'Статус: создан answer';
   };
@@ -55,6 +57,7 @@ export default () => {
   page.appendChild(statusElement);
   page.appendChild(pasteButton);
   page.appendChild(copyOffer);
+  page.appendChild(logContainer);
 
   return page;
 };
