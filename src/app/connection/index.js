@@ -1,8 +1,16 @@
-const { pcConfig } = require('./config');
+const { peerConfiguration } = require('./config');
 
 class WebRTCConnection {
   constructor() {
-    this.peer = new RTCPeerConnection(pcConfig);
+    this.peer = new RTCPeerConnection(peerConfiguration);
+
+    this.peer.onconnectionstatechange = (event) => {
+      console.log('state changed:', this.peer.iceConnectionState, event);
+    };
+    this.peer.onicecandidateerror = (event) => {
+      console.log('ice error', event);
+    };
+
     this.dataChannel = null;
   }
 
@@ -11,8 +19,10 @@ class WebRTCConnection {
   }
 
   onIceCandidate(callback) {
-    console.log('on in');
-    this.peer.onicecandidate = callback;
+    this.peer.onicecandidate = (event) => {
+      console.log('Новый ICE кандидат: ', event.candidate);
+      callback();
+    };
   }
 
   setRemoteDescription(rowData) {
