@@ -17,10 +17,13 @@ export default () => {
   const statusElement = getStatusElement();
   const logContainer = document.createElement('div');
 
-  connection.initLogger(logContainer);
-  connection.onIceCandidate = () => {
-    statusElement.innerText = 'Статус: создан answer';
-  };
+  connection.initConnection().then(() => {
+    console.log('init alice');
+    connection.initLogger(logContainer);
+    connection.onIceCandidate = () => {
+      statusElement.innerText = 'Статус: создан answer';
+    };
+  });
 
   const pasteButton = new Button('Paste', () => {
     navigator.clipboard
