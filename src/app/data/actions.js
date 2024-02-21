@@ -1,4 +1,6 @@
-export const INCREMENT = 'INCREMENT';
-export const DECREMENT = 'DECREMENT';
+// Profile
+export const SET_USERNAME = 'SET_USERNAME';
 
-export const SET_TEXT = 'SET_TEXT';
+// Connection
+export const GET_STUN_SERVERS = 'GET_STUN_SERVERS';
+export const GET_TURN_SERVERS = 'GET_TURN_SERVERS';
