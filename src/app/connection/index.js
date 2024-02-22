@@ -1,17 +1,16 @@
 const { peerConfiguration } = require('./config');
 
 class WebRTCConnection {
-  constructor() {
-    this.peer = new RTCPeerConnection(peerConfiguration);
+  constructor(peerConfiguration) {
+    this.peerConfiguration = peerConfiguration;
+  }
 
-    this.peer.onconnectionstatechange = (event) => {
-      console.log('state changed:', this.peer.iceConnectionState, event);
-    };
-    this.peer.onicecandidateerror = (event) => {
-      console.log('ice error', event);
-    };
-
-    this.dataChannel = null;
+  initPeerConnection() {
+    const state = JSON.parse(localStorage.getItem('chess-state'));
+    if (state?.connection) {
+      this.peerConfiguration.iceServers.push(...state.connection.turn);
+    }
+    this.peer = new RTCPeerConnection(this.peerConfiguration);
   }
 
   initLogger(logContainer) {
@@ -94,4 +93,4 @@ class WebRTCConnection {
   }
 }
 
-export const connection = new WebRTCConnection();
+export const connection = new WebRTCConnection(peerConfiguration);
