@@ -1,14 +1,15 @@
 const LOCAL_STORAGE_KEY = 'chess-state';
 
 export class Store {
-  constructor(reducers, middlewares = [], isStorageConnected = true) {
+  constructor(reducers, middlewares = [], isLocalStorageConnected = true) {
     this._reducers = reducers;
     this._middlewares = middlewares;
+    this._isLocalStorageConnected = isLocalStorageConnected;
 
     const stateFromLocalStorage = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_KEY)
     );
-    if (isStorageConnected && stateFromLocalStorage) {
+    if (this._isLocalStorageConnected && stateFromLocalStorage) {
       this._state = stateFromLocalStorage;
     } else {
       this._state = this._reduce();
@@ -45,7 +46,9 @@ export class Store {
 
   dispatch(action) {
     this._state = this._reduce(this._state, action);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this._state));
+    if (this._isLocalStorageConnected) {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this._state));
+    }
     this._listeners.forEach((listener) => listener());
   }
 
