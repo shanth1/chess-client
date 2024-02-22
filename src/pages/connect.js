@@ -5,6 +5,26 @@ import Component from '../base/Component';
 import { getMenuModule } from '../modules';
 import { Button } from '@/common';
 
+const getTurnStatusElement = () => {
+  const turnStatus = new Component('div');
+  turnStatus.element.style.display = 'flex';
+  turnStatus.element.style.justifyContent = 'center';
+  turnStatus.subscribe(store, () => {
+    if (store.getState()?.connection?.turn.length > 0) {
+      turnStatus.element.innerText = 'turn is connected';
+      turnStatus.element.style.color = 'green';
+    } else if (store.getState()?.connection?.error) {
+      turnStatus.element.innerText = store.getState().connection.error;
+      turnStatus.element.style.color = 'red';
+    } else {
+      turnStatus.element.innerText = 'turn is not connected';
+      turnStatus.element.style.color = 'orange';
+    }
+  });
+
+  return turnStatus.element;
+};
+
 export default () => {
   const page = document.createElement('div');
 
@@ -36,24 +56,8 @@ export default () => {
 
   const menuButtons = [bobButton, aliceButton, turnButton, backButton];
 
-  const turnStatus = new Component('div');
-  turnStatus.element.style.display = 'flex';
-  turnStatus.element.style.justifyContent = 'center';
-  turnStatus.subscribe(store, () => {
-    if (store.getState()?.connection?.turn.length > 0) {
-      turnStatus.element.innerText = 'turn is connected';
-      turnStatus.element.style.color = 'green';
-    } else if (store.getState()?.connection?.error) {
-      turnStatus.element.innerText = store.getState().connection.error;
-      turnStatus.element.style.color = 'red';
-    } else {
-      turnStatus.element.innerText = 'turn is not connected';
-      turnStatus.element.style.color = 'orange';
-    }
-  });
-
   page.appendChild(getMenuModule('Choose the role', menuButtons));
-  page.appendChild(turnStatus.element);
+  page.appendChild(getTurnStatusElement());
 
   return page;
 };
