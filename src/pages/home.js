@@ -8,10 +8,12 @@ export default () => {
   const connectButton = new Button('p2p', () => {
     router.navigate('connect');
   }).element;
-  const offlineButton = new Button('offline').element;
+  const engineButton = new Button('Engine').element;
+  engineButton.disabled = true;
+  const offlineButton = new Button('Offline').element;
   offlineButton.disabled = true;
 
-  const menuButtons = [connectButton, offlineButton];
+  const menuButtons = [connectButton, offlineButton, engineButton];
 
   page.appendChild(getMenuModule('Menu', menuButtons));
 

@@ -1,3 +1,5 @@
+import { store } from '../app/data';
+import { SET_TURN_SERVERS } from '../app/data/actions';
 import router from '../app/router';
 import { getMenuModule } from '../modules';
 import { Button } from '@/common';
@@ -13,11 +15,25 @@ export default () => {
     router.navigate('alice');
   }).element;
 
-  const backButton = new Button('Go back', () => {
+  const turnButton = new Button('Past TURN', () => {
+    navigator.clipboard
+      .readText()
+      .then((text) => {
+        console.log('paste turn');
+        store.dispatch({
+          isFetch: true,
+          type: SET_TURN_SERVERS,
+          payload: { url: text },
+        });
+      })
+      .catch(console.error);
+  }).element;
+
+  const backButton = new Button('←', () => {
     router.navigate('');
   }).element;
 
-  const menuButtons = [bobButton, aliceButton, backButton];
+  const menuButtons = [bobButton, aliceButton, turnButton, backButton];
 
   page.appendChild(getMenuModule('Choose the role', menuButtons));
 

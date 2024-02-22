@@ -3,7 +3,7 @@ import { Button, Input } from '../common';
 
 const getMessageElement = (text) => {
   const message = document.createElement('div');
-  message.innerText = `[${new Date().toUTCString().split(' ')[4]}]: ${text}`;
+  message.innerText = `[${new Date().getHours()}:${new Date().getMinutes()}]: ${text}`;
   message.style.fontSize = '24px';
 
   return message;
@@ -11,10 +11,15 @@ const getMessageElement = (text) => {
 
 export default () => {
   const page = document.createElement('div');
+
   const form = document.createElement('form');
+  form.style.display = 'flex';
+  form.style.justifyContent = 'center';
+  form.style.padding = '20px';
   form.onsubmit = (event) => event.preventDefault();
 
   const chatContainer = document.createElement('div');
+  chatContainer.style.padding = '0 16px';
   if (connection.dataChannel) {
     connection.dataChannel.onmessage = (event) => {
       const message = getMessageElement(event.data);

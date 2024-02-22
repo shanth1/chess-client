@@ -1,5 +1,9 @@
 .input {
-    width: 250px;
-    height: 40px;
+    width: 350px;
+    height: 50px;
     font-size: larger;
+    border-radius: 10px;
+    box-sizing: border-box;
+    margin-right: 8px;
+    padding: 0 15px;
 }
