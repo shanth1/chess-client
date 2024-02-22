@@ -1,19 +1,36 @@
 const LOCAL_STORAGE_KEY = 'chess-state';
 
 export class Store {
-  constructor(reducers, isStorageConnected = true) {
+  constructor(reducers, middlewares = [], isLocalStorageConnected = true) {
     this._reducers = reducers;
+    this._middlewares = middlewares;
+    this._isLocalStorageConnected = isLocalStorageConnected;
 
     const stateFromLocalStorage = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_KEY)
     );
-    if (isStorageConnected && stateFromLocalStorage) {
+    if (this._isLocalStorageConnected && stateFromLocalStorage) {
       this._state = stateFromLocalStorage;
     } else {
       this._state = this._reduce();
     }
 
     this._listeners = [];
+    this._initMiddlewares();
+  }
+
+  _initMiddlewares() {
+    const middlewareAPI = {
+      getState: this.getState.bind(this),
+      dispatch: (action, ...args) => this.dispatch(action, ...args),
+    };
+    const chain = this._middlewares.map((middleware) =>
+      middleware(middlewareAPI)
+    );
+    this.dispatch = chain.reduce(
+      (next, middleware) => middleware(next),
+      this.dispatch.bind(this)
+    );
   }
 
   _reduce(state, action) {
@@ -29,7 +46,9 @@ export class Store {
 
   dispatch(action) {
     this._state = this._reduce(this._state, action);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this._state));
+    if (this._isLocalStorageConnected) {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this._state));
+    }
     this._listeners.forEach((listener) => listener());
   }
 
