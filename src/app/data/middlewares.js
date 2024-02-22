@@ -11,7 +11,7 @@ export const fetchMiddleware = (store) => (next) => (action) => {
       })
       .catch((error) => {
         console.log('error on fetch:', error);
-        store.dispatch({ FETCH_ERROR, payload: { error } });
+        store.dispatch({ type: FETCH_ERROR, payload: { error } });
       });
   } else {
     next(action);

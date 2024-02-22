@@ -1,4 +1,4 @@
-import { SET_USERNAME, SET_TURN_SERVERS } from './actions';
+import { SET_USERNAME, SET_TURN_SERVERS, FETCH_ERROR } from './actions';
 
 export const profileReducer = (
   state = { username: 'user', avatar: '' },
@@ -13,12 +13,14 @@ export const profileReducer = (
 };
 
 export const connectionReducer = (
-  state = { stun: [], turn: [] },
+  state = { stun: [], turn: [], error },
   action = {}
 ) => {
   switch (action.type) {
     case SET_TURN_SERVERS:
       return { ...state, turn: action.payload.data };
+    case FETCH_ERROR:
+      return { ...state, error: 'Error from fetch' };
     default:
       return state;
   }

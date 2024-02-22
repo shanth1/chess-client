@@ -43,9 +43,12 @@ export default () => {
     if (store.getState()?.connection?.turn.length > 0) {
       turnStatus.element.innerText = 'turn is connected';
       turnStatus.element.style.color = 'green';
+    } else if (store.getState()?.connection?.error) {
+      turnStatus.element.innerText = store.getState().connection.error;
+      turnStatus.element.style.color = 'red';
     } else {
       turnStatus.element.innerText = 'turn is not connected';
-      turnStatus.element.style.color = 'red';
+      turnStatus.element.style.color = 'orange';
     }
   });
 
