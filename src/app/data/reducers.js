@@ -1,4 +1,4 @@
-import { SET_USERNAME, GET_TURN_SERVERS } from './actions';
+import { SET_USERNAME, SET_TURN_SERVERS } from './actions';
 
 export const profileReducer = (
   state = { username: 'user', avatar: '' },
@@ -17,8 +17,9 @@ export const connectionReducer = (
   action = {}
 ) => {
   switch (action.type) {
-    case GET_TURN_SERVERS:
-      return state;
+    case SET_TURN_SERVERS:
+      console.log('REDUCER:', action.payload.data);
+      return { ...state, turn: action.payload.data };
     default:
       return state;
   }

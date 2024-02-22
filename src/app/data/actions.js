@@ -1,6 +1,7 @@
 // Profile
 export const SET_USERNAME = 'SET_USERNAME';
 
+export const FETCH_ERROR = 'FETCH_ERROR';
+
 // Connection
-export const GET_STUN_SERVERS = 'GET_STUN_SERVERS';
-export const GET_TURN_SERVERS = 'GET_TURN_SERVERS';
+export const SET_TURN_SERVERS = 'SET_TURN_SERVERS';
