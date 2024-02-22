@@ -39,7 +39,6 @@ export default () => {
       navigator.clipboard
         .writeText(offer)
         .then(() => {
-          console.log('copied');
           statusElement.innerText = 'Статус: скопировано, ожидаем answer';
         })
         .catch(console.error);
@@ -51,7 +50,6 @@ export default () => {
     navigator.clipboard
       .readText()
       .then((text) => {
-        console.log('paste');
         connection.setRemoteDescription(text);
       })
       .catch(console.error);

@@ -19,7 +19,6 @@ export default () => {
     navigator.clipboard
       .readText()
       .then((text) => {
-        console.log('paste turn');
         store.dispatch({
           isFetch: true,
           type: SET_TURN_SERVERS,

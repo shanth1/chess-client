@@ -18,7 +18,6 @@ export const connectionReducer = (
 ) => {
   switch (action.type) {
     case SET_TURN_SERVERS:
-      console.log('REDUCER:', action.payload.data);
       return { ...state, turn: action.payload.data };
     default:
       return state;

@@ -29,7 +29,6 @@ export default () => {
     navigator.clipboard
       .readText()
       .then((text) => {
-        console.log('paste');
         connection.onIceCandidate(
           () => (statusElement.innerText = 'Статус: создан answer')
         );

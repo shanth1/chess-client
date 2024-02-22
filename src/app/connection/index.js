@@ -54,7 +54,6 @@ class WebRTCConnection {
 
   onIceCandidate(callback) {
     this.peer.addEventListener('icecandidate', () => {
-      console.log('Новый ICE кандидат: ', event.candidate);
       callback();
     });
   }
