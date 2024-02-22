@@ -1,20 +1,24 @@
-import { DECREMENT, INCREMENT, SET_TEXT } from './actions';
+import { SET_USERNAME, SET_TURN_SERVERS } from './actions';
 
-export const counterReducer = (state = { value: 0 }, action = {}) => {
+export const profileReducer = (
+  state = { username: 'user', avatar: '' },
+  action = {}
+) => {
   switch (action.type) {
-    case INCREMENT:
-      return { ...state, value: state.value + 1 };
-    case DECREMENT:
-      return { ...state, value: state.value - 1 };
+    case SET_USERNAME:
+      return { ...state, text: action.payload.username };
     default:
-      return state;
+      break;
   }
 };
 
-export const inputReducer = (state = { text: 'world' }, action = {}) => {
+export const connectionReducer = (
+  state = { stun: [], turn: [] },
+  action = {}
+) => {
   switch (action.type) {
-    case SET_TEXT:
-      return { ...state, text: action.payload.text };
+    case SET_TURN_SERVERS:
+      return { ...state, turn: action.payload.data };
     default:
       return state;
   }

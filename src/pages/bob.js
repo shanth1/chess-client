@@ -2,7 +2,7 @@ import { Button } from '@/common';
 import router from '../app/router';
 import { connection } from '../app/connection';
 
-const initConnection = (statusElement) => {
+const initCallbacks = (statusElement) => {
   connection.onOpen('bob', () => {
     router.navigate('game');
   });
@@ -28,7 +28,8 @@ export default () => {
   const statusElement = getStatusElement();
   const logContainer = document.createElement('div');
 
-  initConnection(statusElement);
+  connection.initPeerConnection();
+  initCallbacks(statusElement);
   connection.initLogger(logContainer);
   connection.createOffer();
 
@@ -38,7 +39,6 @@ export default () => {
       navigator.clipboard
         .writeText(offer)
         .then(() => {
-          console.log('copied');
           statusElement.innerText = 'Статус: скопировано, ожидаем answer';
         })
         .catch(console.error);
@@ -50,7 +50,6 @@ export default () => {
     navigator.clipboard
       .readText()
       .then((text) => {
-        console.log('paste');
         connection.setRemoteDescription(text);
       })
       .catch(console.error);

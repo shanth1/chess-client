@@ -19,6 +19,7 @@ export default () => {
   const statusElement = getStatusElement();
   const logContainer = document.createElement('div');
 
+  connection.initPeerConnection();
   connection.initLogger(logContainer);
   connection.onIceCandidate = () => {
     statusElement.innerText = 'Статус: создан answer';
@@ -28,7 +29,6 @@ export default () => {
     navigator.clipboard
       .readText()
       .then((text) => {
-        console.log('paste');
         connection.onIceCandidate(
           () => (statusElement.innerText = 'Статус: создан answer')
         );

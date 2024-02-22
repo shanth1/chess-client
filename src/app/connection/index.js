@@ -1,17 +1,16 @@
 const { peerConfiguration } = require('./config');
 
 class WebRTCConnection {
-  constructor() {
-    this.peer = new RTCPeerConnection(peerConfiguration);
+  constructor(peerConfiguration) {
+    this.peerConfiguration = peerConfiguration;
+  }
 
-    this.peer.onconnectionstatechange = (event) => {
-      console.log('state changed:', this.peer.iceConnectionState, event);
-    };
-    this.peer.onicecandidateerror = (event) => {
-      console.log('ice error', event);
-    };
-
-    this.dataChannel = null;
+  initPeerConnection() {
+    const state = JSON.parse(localStorage.getItem('chess-state'));
+    if (state?.connection) {
+      this.peerConfiguration.iceServers.push(...state.connection.turn);
+    }
+    this.peer = new RTCPeerConnection(this.peerConfiguration);
   }
 
   initLogger(logContainer) {
@@ -55,7 +54,6 @@ class WebRTCConnection {
 
   onIceCandidate(callback) {
     this.peer.addEventListener('icecandidate', () => {
-      console.log('Новый ICE кандидат: ', event.candidate);
       callback();
     });
   }
@@ -65,13 +63,21 @@ class WebRTCConnection {
   }
 
   async createOffer() {
-    const offer = await this.peer.createOffer();
-    this.peer.setLocalDescription(offer);
+    try {
+      const offer = await this.peer.createOffer();
+      this.peer.setLocalDescription(offer);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async createAnswer() {
-    const answer = await this.peer.createAnswer();
-    this.peer.setLocalDescription(answer);
+    try {
+      const answer = await this.peer.createAnswer();
+      this.peer.setLocalDescription(answer);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   onOpen(role, callback) {
@@ -94,4 +100,4 @@ class WebRTCConnection {
   }
 }
 
-export const connection = new WebRTCConnection();
+export const connection = new WebRTCConnection(peerConfiguration);
