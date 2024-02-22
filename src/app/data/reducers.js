@@ -20,7 +20,7 @@ export const connectionReducer = (
     case SET_TURN_SERVERS:
       return { ...state, turn: action.payload.data };
     case FETCH_ERROR:
-      return { ...state, error: 'Error from fetch' };
+      return { ...state, error: action.payload.error };
     default:
       return state;
   }
