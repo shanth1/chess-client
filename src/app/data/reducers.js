@@ -13,7 +13,7 @@ export const profileReducer = (
 };
 
 export const connectionReducer = (
-  state = { stun: {}, turn: {} },
+  state = { stun: [], turn: [] },
   action = {}
 ) => {
   switch (action.type) {
