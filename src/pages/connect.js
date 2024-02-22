@@ -1,5 +1,5 @@
 import { store } from '../app/data';
-import { SET_TURN_SERVERS } from '../app/data/actions';
+import { DELETE_TURN_SERVERS, SET_TURN_SERVERS } from '../app/data/actions';
 import router from '../app/router';
 import Component from '../base/Component';
 import { getMenuModule } from '../modules';
@@ -49,12 +49,22 @@ export default () => {
       .catch(console.error);
   }).element;
 
+  const deleteTurnButton = new Button('Delete TURN', () => {
+    store.dispatch({ type: DELETE_TURN_SERVERS });
+  }).element;
+
   const backButton = new Button('←', () => {
     router.navigate('');
   }).element;
   backButton.style.marginTop = '20px';
 
-  const menuButtons = [bobButton, aliceButton, turnButton, backButton];
+  const menuButtons = [
+    bobButton,
+    aliceButton,
+    turnButton,
+    deleteTurnButton,
+    backButton,
+  ];
 
   page.appendChild(getMenuModule('Choose the role', menuButtons));
   page.appendChild(getTurnStatusElement());
