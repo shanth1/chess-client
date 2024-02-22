@@ -40,7 +40,7 @@ export default () => {
   turnStatus.element.style.display = 'flex';
   turnStatus.element.style.justifyContent = 'center';
   turnStatus.subscribe(store, () => {
-    if (store.getState()?.connection?.turn) {
+    if (store.getState()?.connection?.turn.length > 0) {
       turnStatus.element.innerText = 'turn is connected';
       turnStatus.element.style.color = 'green';
     } else {
