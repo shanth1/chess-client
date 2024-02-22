@@ -64,13 +64,21 @@ class WebRTCConnection {
   }
 
   async createOffer() {
-    const offer = await this.peer.createOffer();
-    this.peer.setLocalDescription(offer);
+    try {
+      const offer = await this.peer.createOffer();
+      this.peer.setLocalDescription(offer);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async createAnswer() {
-    const answer = await this.peer.createAnswer();
-    this.peer.setLocalDescription(answer);
+    try {
+      const answer = await this.peer.createAnswer();
+      this.peer.setLocalDescription(answer);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   onOpen(role, callback) {
