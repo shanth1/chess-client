@@ -1,3 +1,4 @@
+import { isPeerConfigObject } from '../connection/utils';
 import { FETCH_ERROR } from './actions';
 
 export const fetchMiddleware = (store) => (next) => (action) => {
@@ -6,26 +7,14 @@ export const fetchMiddleware = (store) => (next) => (action) => {
       .then((response) => response.json())
       .then((data) => {
         console.log('success response:', data);
-        if (!Array.isArray(data)) {
-          return Promise.reject(new Error('Incorrect response'));
-        }
-        for (const server of data) {
-          if (typeof server.urls !== 'string' && !Array.isArray(server.urls)) {
-            return Promise.reject(new Error('Incorrect urls in iceServers'));
-          }
-        }
-        try {
-          new RTCPeerConnection(data);
-          const newAction = {
-            type: action.type,
-            payload: { data },
-          };
-          store.dispatch(newAction);
-        } catch (error) {
-          return Promise.reject(
-            new Error('Connection instantiation console.error();')
-          );
-        }
+        return isPeerConfigObject(data);
+      })
+      .then((data) => {
+        const newAction = {
+          type: action.type,
+          payload: { data },
+        };
+        store.dispatch(newAction);
       })
       .catch((error) => {
         const errorMessage =
