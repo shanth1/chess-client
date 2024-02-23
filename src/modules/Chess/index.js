@@ -5,7 +5,7 @@ const initBoard = () => {
     Chessboard('board', {
       pieceTheme: 'assets/{piece}.png',
       position: 'start',
-      draggable: false,
+      draggable: true,
       dropOffBoard: 'trash',
       sparePieces: false,
     });

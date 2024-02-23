@@ -20,6 +20,10 @@ const getPlugins = ({ mode, analyze, paths }) => {
           from: path.resolve(paths.public, 'serviceWorkers.js'),
           to: 'sw.js',
         },
+        {
+          from: path.resolve(paths.public, 'assets'),
+          to: 'assets',
+        },
       ],
     }),
     new HtmlWebPackPlugin({
@@ -39,6 +43,7 @@ const getPlugins = ({ mode, analyze, paths }) => {
       new FaviconsWebpackPlugin({
         logo: path.resolve(paths.root, 'icons', 'favicon.svg'),
         mode: 'light',
+        outputPath: 'icons',
       })
     );
     plugins.push(
