@@ -1,5 +1,6 @@
 import { connection } from '../app/connection';
 import { Button, Input } from '../common';
+import { Chess } from 'chess.js';
 
 const getMessageElement = (text) => {
   const message = document.createElement('div');
@@ -10,6 +11,15 @@ const getMessageElement = (text) => {
 };
 
 export default () => {
+  const chess = new Chess();
+
+  while (!chess.isGameOver()) {
+    const moves = chess.moves();
+    const move = moves[Math.floor(Math.random() * moves.length)];
+    chess.move(move);
+  }
+  console.log(chess.pgn());
+
   const page = document.createElement('div');
 
   const form = document.createElement('form');
