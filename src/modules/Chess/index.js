@@ -1,14 +1,13 @@
 import styles from './style.module.css';
-import { Chess } from 'chess.js';
 
 const initBoard = () => {
   setTimeout(() => {
-    console.log('loaded', document.getElementById('board'));
     Chessboard('board', {
       pieceTheme: 'assets/{piece}.png',
-      draggable: true,
+      position: 'start',
+      draggable: false,
       dropOffBoard: 'trash',
-      sparePieces: true,
+      sparePieces: false,
     });
   });
 };
