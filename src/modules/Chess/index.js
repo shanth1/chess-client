@@ -5,6 +5,7 @@ const initBoard = () => {
   setTimeout(() => {
     console.log('loaded', document.getElementById('board'));
     Chessboard('board', {
+      pieceTheme: 'assets/{piece}.png',
       draggable: true,
       dropOffBoard: 'trash',
       sparePieces: true,
