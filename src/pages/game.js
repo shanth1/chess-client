@@ -1,5 +1,6 @@
 import { connection } from '../app/connection';
 import { Button, Input } from '../common';
+import { getBoardModule } from '../modules';
 
 const getMessageElement = (text) => {
   const message = document.createElement('div');
@@ -39,6 +40,7 @@ export default () => {
     }
   }).element;
 
+  page.appendChild(getBoardModule());
   form.appendChild(input);
   form.appendChild(sendButton);
   page.appendChild(form);
