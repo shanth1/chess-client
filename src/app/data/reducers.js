@@ -3,6 +3,7 @@ import {
   SET_TURN_SERVERS,
   FETCH_ERROR,
   DELETE_TURN_SERVERS,
+  SET_ORIENTATION,
 } from './actions';
 
 export const profileReducer = (
@@ -13,7 +14,7 @@ export const profileReducer = (
     case SET_USERNAME:
       return { ...state, text: action.payload.username };
     default:
-      break;
+      return state;
   }
 };
 
@@ -28,6 +29,15 @@ export const connectionReducer = (
       return { ...state, turn: [] };
     case FETCH_ERROR:
       return { ...state, error: action.payload.error };
+    default:
+      return state;
+  }
+};
+
+export const gameReducer = (state = { orientation: '' }, action = {}) => {
+  switch (action.type) {
+    case SET_ORIENTATION:
+      return { ...state, orientation: action.payload.orientation };
     default:
       return state;
   }
