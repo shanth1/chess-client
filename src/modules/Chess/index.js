@@ -1,6 +1,7 @@
 import { Chess } from 'chess.js';
 import { connection } from '../../app/connection';
 import styles from './style.module.css';
+import { store } from '../../app/data';
 
 const initBoard = () => {
   setTimeout(() => {
@@ -9,7 +10,11 @@ const initBoard = () => {
 
       if (
         (game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-        (game.turn() === 'b' && piece.search(/^w/) !== -1)
+        (game.turn() === 'b' && piece.search(/^w/) !== -1) ||
+        (store.getState().game.orientation === 'white' &&
+          piece.search(/^b/) !== -1) ||
+        (store.getState().game.orientation === 'black' &&
+          piece.search(/^w/) !== -1)
       ) {
         return false;
       }
@@ -31,11 +36,8 @@ const initBoard = () => {
       }
     }
 
-    function onSnapEnd() {
-      board.position(game.fen());
-    }
-
     const game = new Chess();
+
     const board = Chessboard('board', {
       pieceTheme: 'assets/{piece}.png',
       position: 'start',
@@ -46,6 +48,12 @@ const initBoard = () => {
       onDrop,
       onSnapEnd,
     });
+
+    board.orientation(store.getState().game.orientation);
+
+    function onSnapEnd() {
+      board.position(game.fen());
+    }
 
     if (connection.dataChannel) {
       connection.dataChannel.addEventListener('message', () => {

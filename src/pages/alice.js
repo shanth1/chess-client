@@ -1,6 +1,8 @@
 import { Button } from '@/common';
 import router from '../app/router';
 import { connection } from '../app/connection';
+import { store } from '../app/data';
+import { SET_ORIENTATION } from '../app/data/actions';
 
 const getStatusElement = () => {
   const status = document.createElement('div');
@@ -13,6 +15,8 @@ const getStatusElement = () => {
 };
 
 export default () => {
+  store.dispatch({ type: SET_ORIENTATION, payload: { orientation: 'black' } });
+
   const page = document.createElement('div');
   page.style.padding = '20px';
 

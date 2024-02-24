@@ -1,6 +1,8 @@
 import { Button } from '@/common';
 import router from '../app/router';
 import { connection } from '../app/connection';
+import { store } from '../app/data';
+import { SET_ORIENTATION } from '../app/data/actions';
 
 const initCallbacks = (statusElement) => {
   connection.onOpen('bob', () => {
@@ -22,6 +24,8 @@ const getStatusElement = () => {
 };
 
 export default () => {
+  store.dispatch({ type: SET_ORIENTATION, payload: { orientation: 'white' } });
+
   const page = document.createElement('div');
   page.style.padding = '20px';
 
