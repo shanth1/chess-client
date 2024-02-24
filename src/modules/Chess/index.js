@@ -23,7 +23,7 @@ const initBoard = () => {
           promotion: 'q',
         });
         if (connection.dataChannel) {
-          const movePresentation = JSON.stringify(move);
+          const movePresentation = JSON.stringify({ message: '', move });
           connection.dataChannel.send(movePresentation);
         }
       } catch (error) {
@@ -48,12 +48,13 @@ const initBoard = () => {
     });
 
     if (connection.dataChannel) {
-      connection.dataChannel.onmessage = (event) => {
-        const move = JSON.parse(event.data);
-        console.log(move);
-        game.move(move);
-        board.position(game.fen());
-      };
+      connection.dataChannel.addEventListener('message', () => {
+        const move = JSON.parse(event.data).move;
+        if (move) {
+          game.move(move);
+          board.position(game.fen());
+        }
+      });
     }
   });
 };

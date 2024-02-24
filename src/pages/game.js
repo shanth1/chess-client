@@ -22,19 +22,27 @@ export default () => {
   const chatContainer = document.createElement('div');
   chatContainer.style.padding = '0 16px';
   if (connection.dataChannel) {
-    connection.dataChannel.onmessage = (event) => {
-      const message = getMessageElement(event.data);
-      message.style.color = 'grey';
-      chatContainer.prepend(message);
-    };
+    connection.dataChannel.addEventListener('message', (event) => {
+      const message = JSON.parse(event.data).message;
+      console.log('message', message, JSON.parse(event.data));
+      if (message) {
+        const messageElement = getMessageElement(message);
+        messageElement.style.color = 'grey';
+        chatContainer.prepend(messageElement);
+      }
+    });
   }
   const input = new Input().element;
   const sendButton = new Button('Send', () => {
     if (input.value) {
-      const message = getMessageElement(input.value);
-      chatContainer.prepend(message);
+      const messageElement = getMessageElement(input.value);
+      chatContainer.prepend(messageElement);
       if (connection.dataChannel) {
-        connection.dataChannel.send(input.value);
+        const dataPresentation = JSON.stringify({
+          message: input.value,
+          move: null,
+        });
+        connection.dataChannel.send(dataPresentation);
       }
       input.value = '';
     }
