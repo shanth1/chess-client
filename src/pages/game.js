@@ -4,7 +4,7 @@ import { getBoardModule } from '../modules';
 
 const getMessageElement = (text) => {
   const message = document.createElement('div');
-  message.innerText = `[${new Date().getHours()}:${new Date().getMinutes()}]: ${text}`;
+  message.innerText = `[${new Date().getHours()}:${new Date().getMinutes()}] ${text}`;
   message.style.fontSize = '24px';
 
   return message;
@@ -24,7 +24,6 @@ export default () => {
   if (connection.dataChannel) {
     connection.dataChannel.addEventListener('message', (event) => {
       const message = JSON.parse(event.data).message;
-      console.log('message', message, JSON.parse(event.data));
       if (message) {
         const messageElement = getMessageElement(message);
         messageElement.style.color = 'grey';
@@ -40,7 +39,6 @@ export default () => {
       if (connection.dataChannel) {
         const dataPresentation = JSON.stringify({
           message: input.value,
-          move: null,
         });
         connection.dataChannel.send(dataPresentation);
       }

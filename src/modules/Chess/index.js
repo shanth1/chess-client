@@ -23,7 +23,7 @@ const initBoard = () => {
           promotion: 'q',
         });
         if (connection.dataChannel) {
-          const movePresentation = JSON.stringify({ message: '', move });
+          const movePresentation = JSON.stringify({ move });
           connection.dataChannel.send(movePresentation);
         }
       } catch (error) {
