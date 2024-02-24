@@ -43,7 +43,6 @@ const getPlugins = ({ mode, analyze, paths }) => {
       new FaviconsWebpackPlugin({
         logo: path.resolve(paths.root, 'icons', 'favicon.svg'),
         mode: 'light',
-        outputPath: 'icons',
       })
     );
     plugins.push(
